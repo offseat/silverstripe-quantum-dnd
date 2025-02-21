@@ -1,0 +1,19 @@
+{
+    "name": "silverstripe/quantum-dnd",
+    "description": "Drag and drop api builder for Silverstripe Quantum",
+    "type": "silverstripe-vendormodule",
+    "extra": {
+        "expose": [
+            "client/dist"
+        ]
+    },
+    "require": {
+        "silverstripe/quantum": "~"
+    },
+    "repositories": [
+        {
+            "type": "git",
+            "url": "git@github.com:offseat/silverstripe-quantum-dnd.git"
+        }
+    ]
+}
