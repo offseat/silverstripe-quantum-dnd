@@ -5,7 +5,6 @@ namespace Silverstripe\Quantum\Admin;
 use SilverStripe\Admin\LeftAndMain;
 use SilverStripe\Control\HTTPResponse;
 use SilverStripe\Core\Convert;
-use SilverStripe\ORM\DataObject;
 use SilverStripe\View\Requirements;
 use Silverstripe\Quantum\Model\Collection;
 
@@ -38,7 +37,6 @@ class DashboardAdmin extends LeftAndMain
         
         $this->extend('updateInit');
 	}
-    
 
     public function addCollection(): HTTPResponse
     {
@@ -84,10 +82,7 @@ class DashboardAdmin extends LeftAndMain
             }
 
             if ($key === 'fields') {
-                // $do->Fields()->removeAll();
-                // foreach ($value as $field) {
-                //     $do->Fields()->add(DataObject::get_by_id($field['id']));
-                // }
+                $do->Fields = json_encode($value, JSON_FORCE_OBJECT);
             }
         }
 
@@ -103,14 +98,15 @@ class DashboardAdmin extends LeftAndMain
     public function getCollections()
     {
         $collections = [];
-        Collection::get()->each(function($col) use (&$collections) {
+        Collection::get()->each(function($col) use (&$collections, &$fields) {
+            $fields = $col->dbObject('Fields')->raw() ? json_decode($col->dbObject('Fields')->raw(), true) : [];
             array_push($collections, [
                 'id' => $col->dbObject('ID')->raw(),
                 'name' => $col->dbObject('Name')->raw(),
                 'route' => $col->dbObject('Route')->raw(),
-                'createdAt' => $col->dbObject('Created')->Raw(),
-                'updatedAt' => $col->dbObject('LastEdited')->Raw(),
-                'fields' => [],
+                'createdAt' => $col->dbObject('Created')->raw(),
+                'updatedAt' => $col->dbObject('LastEdited')->raw(),
+                'fields' => $fields,
             ]);
         });
 

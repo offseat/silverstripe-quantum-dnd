@@ -1,3 +1,10 @@
 ---
 Name: quantum_auth_dnd
+After:
+  - 'quantum'
+Only:
+  - 'quantum'
 ---
+Silverstripe\Quantum\Model\Collection:
+  extensions:
+    - Silverstripe\Quantum\Extensions\CollectionExtension
